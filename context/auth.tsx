@@ -13,6 +13,8 @@ type AuthContextType = {
 // create context
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// create Provider
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
 	function signInWithGoogle() {
@@ -41,3 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+/**
+ * if we had'nt created this custom hook then wherever we needed context value we had to do like this ;
+ * const {auth} = useContext(AuthContext)
+ */
