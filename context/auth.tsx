@@ -1,13 +1,20 @@
 "use client";
 
 import { auth } from "@/firebase/client";
-import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
+import {
+	GoogleAuthProvider,
+	ParsedToken,
+	signInWithPopup,
+	User,
+} from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
+import { removeToken, setToken } from "./actions";
 
 type AuthContextType = {
 	currentUser: User | null;
 	logout: () => void;
 	signInWithGoogle: () => void;
+	customClaims: any;
 };
 
 // create context
@@ -17,6 +24,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
+	const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null);
 	function signInWithGoogle() {
 		const provider = new GoogleAuthProvider();
 		try {
@@ -27,16 +35,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	}
 	const logout = async () => {
 		await auth.signOut();
+		await removeToken();
 	};
 	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
+		const unsubscribe = auth.onAuthStateChanged(async (user) => {
 			setCurrentUser(user ?? null);
+			if (user) {
+				const tokenResult = await user.getIdTokenResult();
+				const token = tokenResult?.token;
+				const refreshToken = user?.refreshToken;
+				const claims = tokenResult.claims;
+				setCustomClaims(claims ?? null);
+				if (token && refreshToken) {
+					await setToken({ token, refreshToken });
+				}
+			}
 		});
 		return () => unsubscribe();
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ currentUser, logout, signInWithGoogle }}>
+		<AuthContext.Provider
+			value={{ currentUser, logout, signInWithGoogle, customClaims }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
