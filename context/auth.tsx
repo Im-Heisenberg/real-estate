@@ -14,7 +14,7 @@ type AuthContextType = {
 	currentUser: User | null;
 	logout: () => void;
 	signInWithGoogle: () => void;
-	customClaims: any;
+	customClaims: ParsedToken | null;
 };
 
 // create context

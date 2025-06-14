@@ -31,7 +31,6 @@ export const setToken = async ({
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 	});
-	console.log(verifiedToken);
 };
 
 export const removeToken = async () => {
