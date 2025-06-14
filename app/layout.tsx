@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { AuthProvider } from "@/context/auth";
-import AuthButtons from "@/components/auth-buttons";
 import { HomeIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
+import HeaderOptions from "@/components/header-options";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -43,7 +43,7 @@ export default function RootLayout({
 								</Link>
 							</li>
 							<li>
-								<AuthButtons />
+								<HeaderOptions/>
 							</li>
 						</ul>
 					</nav>

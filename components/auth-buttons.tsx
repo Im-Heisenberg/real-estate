@@ -1,36 +1,23 @@
-"use client";
-
-import { useAuth } from "@/context/auth";
 import Link from "next/link";
-import { Button } from "./ui/button";
 
 const AuthButtons = () => {
-	const auth = useAuth();
 	return (
 		<div>
-			{!!auth?.currentUser && (
-				<>
-					<div>{auth.currentUser.email}</div>
-					<Button onClick={auth.logout}>Logout</Button>
-				</>
-			)}
-			{!auth?.currentUser && (
-				<div className="flex gap-2 items-center">
-					<Link
-						href="/login"
-						className="uppercase tracking-widest hover:underline"
-					>
-						Login
-					</Link>
-					<div className="h-8 w-[1px] bg-white/50" />
-					<Link
-						href="/register"
-						className="uppercase tracking-widest hover:underline"
-					>
-						Signup
-					</Link>
-				</div>
-			)}
+			<div className="flex gap-2 items-center">
+				<Link
+					href="/login"
+					className="uppercase tracking-widest hover:underline"
+				>
+					Login
+				</Link>
+				<div className="h-8 w-[1px] bg-white/50" />
+				<Link
+					href="/register"
+					className="uppercase tracking-widest hover:underline"
+				>
+					Signup
+				</Link>
+			</div>
 		</div>
 	);
 };
