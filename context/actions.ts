@@ -16,10 +16,10 @@ export const setToken = async ({
 	const userRecord = await auth.getUser(verifiedToken.uid);
 	// if current logged user is our admin but not yet got the admin tag
 	if (
-		process.env.ADMIN_EMAIL === userRecord.email &&
+		process.env.ADMIN_EMIAL === userRecord.email &&
 		!userRecord?.customClaims?.admin
 	) {
-		await auth.setCustomUserClaims(userRecord.uid, { admin: true });
+		auth.setCustomUserClaims(userRecord.uid, { admin: true });
 	}
 	// set cookies
 	const cookieStore = await cookies();
