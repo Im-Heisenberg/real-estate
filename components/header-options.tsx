@@ -17,6 +17,11 @@ const HeaderOptions = () => {
 		auth?.currentUser?.displayName?.[0] ||
 		auth?.currentUser?.email?.[0] ||
 		null;
+	const isAdmin: boolean | null =
+		auth?.customClaims?.admin &&
+		typeof auth?.customClaims?.admin === "boolean"
+			? auth?.customClaims?.admin
+			: null;
 	return (
 		<>
 			{auth?.currentUser ? (
@@ -38,12 +43,15 @@ const HeaderOptions = () => {
 						<DropdownMenuItem asChild>
 							<Link href="/account">My Account</Link>
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link href="/admin-dashboard">Admin Dashboard</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link href="/account/my-favourites">My Favourites</Link>
-						</DropdownMenuItem>
+						{isAdmin ? (
+							<DropdownMenuItem asChild>
+								<Link href="/admin-dashboard">Admin Dashboard</Link>
+							</DropdownMenuItem>
+						) : (
+							<DropdownMenuItem asChild>
+								<Link href="/account/my-favourites">My Favourites</Link>
+							</DropdownMenuItem>
+						)}
 						<DropdownMenuItem onClick={auth.logout}>
 							Logout
 						</DropdownMenuItem>
