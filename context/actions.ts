@@ -2,6 +2,7 @@
 
 import { auth } from "@/firebase/server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const setToken = async ({
 	token,
@@ -31,10 +32,12 @@ export const setToken = async ({
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 	});
+	redirect('/')
 };
 
 export const removeToken = async () => {
 	const cookieStore = await cookies();
 	cookieStore.delete("firebaseAuthToken");
 	cookieStore.delete("firebaseRefreshToken");
+	redirect("/");
 };

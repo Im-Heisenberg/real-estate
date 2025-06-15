@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth";
 import AuthButtons from "./auth-buttons";
 import Link from "next/link";
+import Image from "next/image";
 const HeaderOptions = () => {
 	const auth = useAuth();
 	const nameInitial: string | null =
@@ -28,8 +29,17 @@ const HeaderOptions = () => {
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<Avatar>
-							<AvatarImage src={`${auth?.currentUser?.photoURL}`} />
-							<AvatarFallback>{nameInitial}</AvatarFallback>
+							{/* <AvatarImage src={`${auth?.currentUser?.photoURL}`} /> */}
+							{!!auth?.currentUser?.photoURL ? (
+								<Image
+									src={auth?.currentUser?.photoURL}
+									alt="profile image"
+									height={50}
+									width={50}
+								/>
+							) : (
+								<AvatarFallback>{nameInitial}</AvatarFallback>
+							)}
 						</Avatar>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
