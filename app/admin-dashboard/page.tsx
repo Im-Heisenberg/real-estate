@@ -1,9 +1,11 @@
 import { Breadcrumbs } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { getProperties } from "@/data/properties";
 import { PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 
-const AdminDashboard = () => {
+const AdminDashboard = async () => {
+	const data = await getProperties()
 	return (
 		<>
 			<Breadcrumbs items={[{ label: "Dashboard" }]} />
