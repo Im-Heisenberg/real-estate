@@ -32,7 +32,7 @@ export const setToken = async ({
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 	});
-	redirect('/')
+	// redirect('/')
 };
 
 export const removeToken = async () => {
