@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/auth";
 import { HomeIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
 import HeaderOptions from "@/components/header-options";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -43,11 +44,12 @@ export default function RootLayout({
 								</Link>
 							</li>
 							<li>
-								<HeaderOptions/>
+								<HeaderOptions />
 							</li>
 						</ul>
 					</nav>
 					{children}
+					<Toaster richColors position="bottom-right" />
 				</AuthProvider>
 			</body>
 		</html>
