@@ -7,11 +7,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback} from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth";
 import AuthButtons from "./auth-buttons";
 import Link from "next/link";
 import Image from "next/image";
+import SectionSpinner from "./section-spinner";
 const HeaderOptions = () => {
 	const auth = useAuth();
 	const nameInitial: string | null =
@@ -23,6 +24,9 @@ const HeaderOptions = () => {
 		typeof auth?.customClaims?.admin === "boolean"
 			? auth?.customClaims?.admin
 			: null;
+	if (auth?.fetchingUser) {
+		return <SectionSpinner />;
+	}
 	return (
 		<>
 			{auth?.currentUser ? (
