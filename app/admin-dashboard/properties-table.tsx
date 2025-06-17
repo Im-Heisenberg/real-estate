@@ -1,4 +1,12 @@
 import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
 	Table,
 	TableBody,
 	TableCell,
@@ -8,9 +16,13 @@ import {
 } from "@/components/ui/table";
 import { getProperties } from "@/data/properties";
 
-const PropertiesTable = async () => {
-	const { data } = await getProperties();
-	console.log(data);
+const PropertiesTable = async ({ page = 1 }: { page?: number }) => {
+	const { data, totalPages } = await getProperties({
+		pagination: {
+			pageSize: 5,
+			page,
+		},
+	});
 
 	return (
 		<>
@@ -36,7 +48,9 @@ const PropertiesTable = async () => {
 								property.address2,
 								property.city,
 								property.postcode,
-							].filter((addressLine) => !!addressLine).join(', ')
+							]
+								.filter((addressLine) => !!addressLine)
+								.join(", ");
 							return (
 								<TableRow key={property.id}>
 									<TableCell>{address}</TableCell>
@@ -49,6 +63,42 @@ const PropertiesTable = async () => {
 					</TableBody>
 				</Table>
 			)}
+			<Pagination className="mt-4">
+				<PaginationContent>
+					<PaginationItem>
+						<PaginationPrevious
+							href={`/admin-dashboard/?page=${
+								Number(page) - 1 > 0 && Number(page) - 1 <= totalPages
+									? Number(page - 1)
+									: 1
+							}`}
+						/>
+					</PaginationItem>
+					{Array.from({ length: totalPages }, (_, i) => {
+						const isCurrentPage = Number(page) === i + 1;
+						return (
+							<PaginationItem key={i}>
+								<PaginationLink
+									isActive={isCurrentPage}
+									href={`/admin-dashboard/?page=${
+										i + 1
+									}`}
+								>
+									{i + 1}
+								</PaginationLink>
+							</PaginationItem>
+						);
+					})}
+					<PaginationItem>
+						<PaginationNext
+							href={`/admin-dashboard/?page=${Math.min(
+								Math.max(1, Number(page) || 1) + 1, // Ensure page is at least 1
+								Number(totalPages) || 1 // Ensure totalPages is at least 1
+							)}`}
+						/>
+					</PaginationItem>
+				</PaginationContent>
+			</Pagination>
 		</>
 	);
 };
