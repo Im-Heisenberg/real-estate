@@ -26,7 +26,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
 	const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null);
-	const [fetchingUser, setFetchingUser] = useState(false);
+	const [fetchingUser, setFetchingUser] = useState(true);
 
 	function signInWithGoogle() {
 		const provider = new GoogleAuthProvider();
@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		await removeToken();
 	};
 	useEffect(() => {
-		setFetchingUser(true);
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
 			setCurrentUser(user ?? null);
 			if (user) {
@@ -53,15 +52,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 				if (token && refreshToken) {
 					await setToken({ token, refreshToken });
 				}
-				setFetchingUser(false);
 			}
+			setFetchingUser(false);
 		});
 		return () => unsubscribe();
 	}, []);
 
 	return (
 		<AuthContext.Provider
-			value={{ currentUser, logout, signInWithGoogle, customClaims , fetchingUser }}
+			value={{
+				currentUser,
+				logout,
+				signInWithGoogle,
+				customClaims,
+				fetchingUser,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>
