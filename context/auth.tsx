@@ -12,8 +12,8 @@ import { removeToken, setToken } from "./actions";
 
 type AuthContextType = {
 	currentUser: User | null;
-	logout: () => void;
-	signInWithGoogle: () => void;
+	logout: () => Promise<void>;
+	signInWithGoogle: () => Promise<void>;
 	customClaims: ParsedToken | null;
 	fetchingUser: boolean;
 };
@@ -28,10 +28,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null);
 	const [fetchingUser, setFetchingUser] = useState(true);
 
-	function signInWithGoogle() {
+	async function signInWithGoogle() {
 		const provider = new GoogleAuthProvider();
 		try {
-			signInWithPopup(auth, provider);
+			await signInWithPopup(auth, provider);
 		} catch (error) {
 			console.error("Error signing in with Google", error);
 		}
