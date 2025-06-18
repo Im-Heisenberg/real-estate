@@ -23,6 +23,7 @@
     "lucide-react": "^0.515.0",
     "next": "15.0.1",
     "next-themes": "^0.4.6",
+    "numeral": "^2.0.6",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.58.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/numeral": "^2.0.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
