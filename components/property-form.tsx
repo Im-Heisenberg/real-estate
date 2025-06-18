@@ -22,15 +22,20 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import React from "react";
+import SectionSpinner from "./section-spinner";
 
 type Props = {
 	handleSubmit: (data: z.infer<typeof propertyDataSchema>) => void;
 	submitButtonLabel: React.ReactNode;
+	defaultValues?: z.infer<typeof propertyDataSchema>;
 };
-const PropertyForm = ({ handleSubmit, submitButtonLabel }: Props) => {
-	const form = useForm<z.infer<typeof propertyDataSchema>>({
-		resolver: zodResolver(propertyDataSchema),
-		defaultValues: {
+const PropertyForm = ({
+	handleSubmit,
+	submitButtonLabel,
+	defaultValues,
+}: Props) => {
+	const combinedValues: z.infer<typeof propertyDataSchema> = {
+		...{
 			address1: "",
 			address2: "",
 			city: "",
@@ -41,6 +46,11 @@ const PropertyForm = ({ handleSubmit, submitButtonLabel }: Props) => {
 			status: "draft",
 			description: "",
 		},
+		...defaultValues,
+	};
+	const form = useForm<z.infer<typeof propertyDataSchema>>({
+		resolver: zodResolver(propertyDataSchema),
+		defaultValues: combinedValues,
 	});
 	return (
 		<>
@@ -205,6 +215,9 @@ const PropertyForm = ({ handleSubmit, submitButtonLabel }: Props) => {
 						type="submit"
 						className="w-full max-w-md mx-auto mt-2 flex gap-2"
 					>
+						<span>
+							{form.formState.isSubmitting && <SectionSpinner />}
+						</span>
 						{submitButtonLabel}
 					</Button>
 				</form>

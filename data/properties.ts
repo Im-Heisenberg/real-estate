@@ -17,7 +17,7 @@ type GetPropertiesOptions = {
 };
 export const getProperties = async (options?: GetPropertiesOptions) => {
 	// const page = (options?.pagination?.page && options?.pagination?.page > 0) || 1;
-	let page =1;
+	let page = 1;
 	const pageSize = options?.pagination?.pageSize || 10;
 
 	const { maxPrice, minPrice, minBedrooms, status } = options?.filters || {};
@@ -57,4 +57,16 @@ export const getProperties = async (options?: GetPropertiesOptions) => {
 			} as Property)
 	);
 	return { data: properties, totalPages };
+};
+
+export const getPorpertyById = async (propertyId: string) => {
+	const propertySnapshot = await firestore
+		.collection("properties")
+		.doc(propertyId)
+		.get();
+	const propertyData = {
+		id: propertyId,
+		...propertySnapshot.data(),
+	} as Property;
+	return { property: propertyData };
 };

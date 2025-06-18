@@ -15,6 +15,7 @@ type AuthContextType = {
 	logout: () => void;
 	signInWithGoogle: () => void;
 	customClaims: ParsedToken | null;
+	fetchingUser: boolean;
 };
 
 // create context
@@ -25,6 +26,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
 	const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null);
+	const [fetchingUser, setFetchingUser] = useState(true);
+
 	function signInWithGoogle() {
 		const provider = new GoogleAuthProvider();
 		try {
@@ -50,13 +53,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 					await setToken({ token, refreshToken });
 				}
 			}
+			setFetchingUser(false);
 		});
 		return () => unsubscribe();
 	}, []);
 
 	return (
 		<AuthContext.Provider
-			value={{ currentUser, logout, signInWithGoogle, customClaims }}
+			value={{
+				currentUser,
+				logout,
+				signInWithGoogle,
+				customClaims,
+				fetchingUser,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>
