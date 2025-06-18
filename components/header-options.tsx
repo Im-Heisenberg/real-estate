@@ -7,14 +7,16 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth";
 import AuthButtons from "./auth-buttons";
 import Link from "next/link";
 import Image from "next/image";
 import SectionSpinner from "./section-spinner";
+import { useRouter } from "next/navigation";
 const HeaderOptions = () => {
 	const auth = useAuth();
+	const router = useRouter();
 	const nameInitial: string | null =
 		auth?.currentUser?.displayName?.[0] ||
 		auth?.currentUser?.email?.[0] ||
@@ -66,7 +68,12 @@ const HeaderOptions = () => {
 								<Link href="/account/my-favourites">My Favourites</Link>
 							</DropdownMenuItem>
 						)}
-						<DropdownMenuItem onClick={auth.logout}>
+						<DropdownMenuItem
+							onClick={async () => {
+								await auth.logout();
+								router.refresh();
+							}}
+						>
 							Logout
 						</DropdownMenuItem>
 					</DropdownMenuContent>
