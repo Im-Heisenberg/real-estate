@@ -10,7 +10,7 @@ const AdminDashboard = async ({
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	searchParams: Promise<any>;
 }) => {
-	const { page } = await searchParams;
+	const { page = 1 } = await searchParams;
 	return (
 		<>
 			<Breadcrumbs items={[{ label: "Dashboard" }]} />

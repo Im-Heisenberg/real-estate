@@ -1,3 +1,4 @@
+import PropertyStatusBadge from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import {
 	Pagination,
@@ -16,8 +17,9 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { getProperties } from "@/data/properties";
-import { PencilIcon } from "lucide-react";
+import { EyeIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
+import numeral from "numeral";
 
 const PropertiesTable = async ({ page = 1 }: { page?: number }) => {
 	const { data, totalPages } = await getProperties({
@@ -57,12 +59,23 @@ const PropertiesTable = async ({ page = 1 }: { page?: number }) => {
 							return (
 								<TableRow key={property.id}>
 									<TableCell>{address}</TableCell>
-									<TableCell>{property.price}</TableCell>
-									<TableCell>{property.status}</TableCell>
-									<TableCell>edit/
+									<TableCell>
+										${numeral(property.price).format("0,0")}
+									</TableCell>
+									<TableCell>
+										{<PropertyStatusBadge status={property.status} />}
+									</TableCell>
+									<TableCell className="flex justify-end gap-1 items-center">
 										<Button asChild variant={"outline"} size={"sm"}>
-											<Link href={`admin-dashboard/edit/${property.id}`}>
-												<PencilIcon/>
+											<Link href={`/property/${property.id}`}>
+												<EyeIcon />
+											</Link>
+										</Button>
+										<Button asChild variant={"outline"} size={"sm"}>
+											<Link
+												href={`/admin-dashboard/edit/${property.id}`}
+											>
+												<PencilIcon />
 											</Link>
 										</Button>
 									</TableCell>
@@ -89,9 +102,7 @@ const PropertiesTable = async ({ page = 1 }: { page?: number }) => {
 							<PaginationItem key={i}>
 								<PaginationLink
 									isActive={isCurrentPage}
-									href={`/admin-dashboard/?page=${
-										i + 1
-									}`}
+									href={`/admin-dashboard/?page=${i + 1}`}
 								>
 									{i + 1}
 								</PaginationLink>
