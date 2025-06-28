@@ -22,6 +22,7 @@ const EditPropertyForm = ({
 	description,
 	price,
 	status,
+	images = [],
 }: Props) => {
 	const auth = useAuth();
 	const router = useRouter();
@@ -33,8 +34,8 @@ const EditPropertyForm = ({
 			toast.success("Property updated successfully");
 			router.push("/admin-dashboard");
 		} catch (error) {
-			console.log(error)
-			toast.error('Unexpected Error Occured')
+			console.log(error);
+			toast.error("Unexpected Error Occured");
 		}
 	};
 	return (
@@ -56,6 +57,7 @@ const EditPropertyForm = ({
 					description,
 					price,
 					status,
+					images: images.map((image) => ({ id: image, url: image })), //doing this map becase Image has a type and in propertForm the url first needs to be formatted
 				}}
 			/>
 		</>

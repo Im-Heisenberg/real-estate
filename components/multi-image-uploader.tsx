@@ -20,6 +20,7 @@ export type ImageUpload = {
 type Props = {
 	images?: ImageUpload[];
 	onImagesChange: (images: ImageUpload[]) => void;
+	urlFormatter?: (image: ImageUpload) => string;
 };
 /**
  *
@@ -27,7 +28,7 @@ type Props = {
  * @returns
  * this componets is responsible only to add or remove the images , uploading or removal will be handled in respective forms
  */
-const MultiImageUploader = ({ images = [], onImagesChange }: Props) => {
+const MultiImageUploader = ({ images = [], onImagesChange , urlFormatter }: Props) => {
 	const uploadInputRef = useRef<HTMLInputElement | null>(null);
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		// get all files
@@ -90,7 +91,7 @@ const MultiImageUploader = ({ images = [], onImagesChange }: Props) => {
 											<div className="bg-gray-100 rounded-lg flex gap-2 items-center overflow-hidden">
 												<div className="size-16 w-16 h-16 relative">
 													<Image
-														src={img.url}
+														src={urlFormatter ? urlFormatter(img):img.url}
 														alt={`img-${img.id}-${img.file}`}
 														fill
 														className="object-cover"

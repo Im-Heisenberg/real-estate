@@ -224,6 +224,14 @@ const PropertyForm = ({
 										onImagesChange={(images: ImageUpload[]) => {
 											form.setValue("images", images);
 										}}
+										urlFormatter={(image) => {
+											if (!image.file) {
+												return `https://firebasestorage.googleapis.com/v0/b/fire-homes-55261.firebasestorage.app/o/${encodeURIComponent(
+													image.url
+												)}?alt=media`;
+											}
+											return image.url;
+										}}
 									/>
 								</FormControl>
 								<FormMessage />

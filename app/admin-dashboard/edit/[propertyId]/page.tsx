@@ -22,7 +22,9 @@ const EditProperty = async ({
 		postcode,
 		price,
 		status,
+		images = [],
 	} = propertyData.property;
+	// ["properties/lbdp8xJNixRpHpDoDQCE/1751013693582-0-Screenshot (7).png"];
 	return (
 		<>
 			<Breadcrumbs
@@ -49,6 +51,7 @@ const EditProperty = async ({
 						bathrooms={bathrooms}
 						description={description}
 						status={status}
+						images={images}
 					/>
 				</CardContent>
 			</Card>
