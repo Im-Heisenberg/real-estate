@@ -3,12 +3,13 @@ import PropertyForm from "@/components/property-form";
 import { propertySchema } from "@/validation/propertySchema";
 import { PlusCircleIcon } from "lucide-react";
 import { z } from "zod";
-import { createNewProperty, savePropertyImages } from "./action";
+import { createNewProperty } from "./action";
 import { useAuth } from "@/context/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ref, uploadBytesResumable, UploadTask } from "firebase/storage";
 import { storage } from "@/firebase/client";
+import { savePropertyImages } from "../actions";
 const NewPropertyForm = () => {
 	const auth = useAuth();
 	const router = useRouter();
