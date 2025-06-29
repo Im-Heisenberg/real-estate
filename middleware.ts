@@ -8,8 +8,6 @@ export async function middleware(request: NextRequest) {
 	const cookieStore = await cookies();
     const authToken = cookieStore.get("firebaseAuthToken")?.value;
     
-	console.log(authToken);
-	console.log(request.nextUrl.pathname);
 
 
     // return to homepage if user is not logged in trying to access /login ---> '/login'
