@@ -1,5 +1,5 @@
 "use client";
-import { propertyDataSchema } from "@/validation/propertySchema";
+import { propertySchema } from "@/validation/propertySchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,18 +23,19 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import React from "react";
 import SectionSpinner from "./section-spinner";
+import MultiImageUploader, { ImageUpload } from "./multi-image-uploader";
 
 type Props = {
-	handleSubmit: (data: z.infer<typeof propertyDataSchema>) => void;
+	handleSubmit: (data: z.infer<typeof propertySchema>) => void;
 	submitButtonLabel: React.ReactNode;
-	defaultValues?: z.infer<typeof propertyDataSchema>;
+	defaultValues?: z.infer<typeof propertySchema>;
 };
 const PropertyForm = ({
 	handleSubmit,
 	submitButtonLabel,
 	defaultValues,
 }: Props) => {
-	const combinedValues: z.infer<typeof propertyDataSchema> = {
+	const combinedValues: z.infer<typeof propertySchema> = {
 		...{
 			address1: "",
 			address2: "",
@@ -45,11 +46,12 @@ const PropertyForm = ({
 			bathrooms: 0,
 			status: "draft",
 			description: "",
+			images: [],
 		},
 		...defaultValues,
 	};
-	const form = useForm<z.infer<typeof propertyDataSchema>>({
-		resolver: zodResolver(propertyDataSchema),
+	const form = useForm<z.infer<typeof propertySchema>>({
+		resolver: zodResolver(propertySchema),
 		defaultValues: combinedValues,
 	});
 	return (
@@ -211,6 +213,32 @@ const PropertyForm = ({
 							/>
 						</fieldset>
 					</div>
+					<FormField
+						control={form.control}
+						name="images"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<MultiImageUploader
+										images={field.value}
+										onImagesChange={(images: ImageUpload[]) => {
+											form.setValue("images", images);
+										}}
+										urlFormatter={(image) => {
+											if (!image.file) {
+												return `https://firebasestorage.googleapis.com/v0/b/fire-homes-55261.firebasestorage.app/o/${encodeURIComponent(
+													image.url
+												)}?alt=media`;
+											}
+											return image.url;
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
 					<Button
 						type="submit"
 						className="w-full max-w-md mx-auto mt-2 flex gap-2"
