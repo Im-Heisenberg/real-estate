@@ -5,11 +5,11 @@ import {
 	CarouselItem,
 } from "@/components/ui/carousel";
 import { getPorpertyById } from "@/data/properties";
-import {BathIcon, Bed } from "lucide-react";
 import Image from "next/image";
 import numeral from "numeral";
 import ReactMarkdown from "react-markdown";
 import BackButton from "./back-btn";
+import { BathIcon, Bed } from "lucide-react";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const PropertyPage = async ({ params }: { params: Promise<any> }) => {
 	const { propertyId } = await params;
@@ -71,10 +71,10 @@ const PropertyPage = async ({ params }: { params: Promise<any> }) => {
 					</h2>
 					<div className="flex gap-10">
 						<div className="flex gap-2">
-							<Bed /> {property.bedrooms}
+							<Bed/> {property.bedrooms}
 						</div>
 						<div className="flex gap-2">
-							<BathIcon /> {property.bathrooms}
+							<BathIcon/> {property.bathrooms}
 						</div>
 					</div>
 				</div>

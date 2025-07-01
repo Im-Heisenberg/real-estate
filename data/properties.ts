@@ -40,11 +40,19 @@ export const getProperties = async (options?: GetPropertiesOptions) => {
 	const totalPages = await getTotalPages(propertiesQuery, pageSize);
 	// const res2 = await totalPages('properties', pageSize);
 	// pagination edge case handled
-	if (options?.pagination?.page) {
-		page = options.pagination.page ?? 1; // Default to 1 if undefined
-		if (page < 1) page = 1;
-		if (page && page > totalPages) page = totalPages;
+	if (
+		options?.pagination?.page !== undefined &&
+		options?.pagination?.page !== null
+	) {
+		page = Math.max(1, options.pagination.page); // Ensure page is at least 1
+		if (totalPages > 0 && page > totalPages) {
+			page = totalPages;
+		}
 	}
+
+	// Ensure page is never less than 1 to prevent negative offset
+	page = Math.max(1, page);
+
 	const propertiesSnapshot = await propertiesQuery
 		.limit(pageSize)
 		.offset((page - 1) * pageSize)
